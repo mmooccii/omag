@@ -1,0 +1,54 @@
+{
+  "name": "omag_template",
+  "version": "0.0.0",
+  "description": "Working templates",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmooccii/omag.git"
+  },
+  "keywords": [
+    "omg"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mmooccii/omag/issues"
+  },
+  "homepage": "https://github.com/mmooccii/omag#readme",
+  "browserslist": ["last 5 versions", "not ie 6-10"],
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "overrides": [
+      {
+        "files": "*.json",
+        "options": {
+          "parser": "json"
+        }
+      },
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "html"
+        }
+      },
+      {
+        "files": "*.css",
+        "options": {
+          "parser": "css"
+        }
+      },
+      {
+        "files": "*.scss",
+        "options": {
+          "parser": "scss"
+        }
+      }
+    ]
+  }
+}
