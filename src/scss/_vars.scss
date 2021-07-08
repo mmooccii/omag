@@ -37,7 +37,7 @@ $break-xsmall: 321px;
 }
 
 // function
-@function size-relative($size: 10px, $type: "font") {
+@function size-relative($size: 10px, $base: "pc", $type: "font") {
   @if type-of($size) == "number" {
     $units: (
       "font": 1rem,
@@ -57,3 +57,32 @@ $break-xsmall: 321px;
     @debug $size;
   }
 }
+
+@mixin font-size-rem($font-size: 14px) {
+  font-size: size-relative($font-size, "pc");
+}
+
+@mixin font-size-rem-sp($font-size: 18px) {
+  font-size: size-relative($font-size, "sp");
+}
+
+@mixin font-size-vw($font-size: 14) {
+  font-size: size-relative($font-size, "pc", "display");
+}
+
+@mixin font-size-vw-sp($font-size: 14) {
+  font-size: size-relative($font-size, "sp", "display");
+}
+
+/* fonts */
+$sans: "Noto Sans JP", "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro",
+  "游ゴシック", "YuGothic", "メイリオ", "Meiryo", sans-serif;
+$sans-ie: "Century Gothic", "futura-pt", "Noto Sans JP", "ヒラギノ角ゴ Pro",
+  "Hiragino Kaku Gothic Pro", "游ゴシック", "YuGothic", "メイリオ", "Meiryo",
+  sans-serif;
+$serif: "Noto Serif JP", "游明朝", YuMincho, "ヒラギノ明朝 ProN W3",
+  "Hiragino Mincho ProN", "HG明朝E", "ＭＳ Ｐ明朝", "ＭＳ 明朝", serif;
+$helvetica: "Helvetica Neue", Helvetica, "Open Sans", Arial, "Lucida Grande",
+  sans-serif;
+$futura: "futura-pt", sans-serif;
+$times: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;

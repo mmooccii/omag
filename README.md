@@ -61,6 +61,78 @@ body {
 #### CSS/Sass
 
 一応、どちらの方式で作っても問題ありません。
+Sass を使うのであれば、media query の'mixin'を用意してありますので、
+こちらを使っていただければと思います。
+
+他にも Mixin 用意してありますので、`src/scss/_vars.scss`の中をご覧ください。
+
+```scss
+p {
+  /* pc サイズ */
+  background-color: red;
+  /* tablet サイズ */
+  @include media("screen", "medium") {
+    background-color: blue;
+  }
+  /* mobile サイズ */
+  @include media("screen", "small") {
+    background-color: green;
+  }
+}
+```
+
+上を、SCSS 変換すると以下のようになります。
+
+```css
+p {
+  background-color: red;
+}
+@media only screen and (max-width: 1199px) and (min-width: 768px) {
+  p {
+    background-color: blue;
+  }
+}
+@media only screen and (max-width: 767px) {
+  p {
+    background-color: green;
+  }
+}
+```
+
+モバイルファーストに書く場合は、
+
+```scss
+p {
+  /* mobile サイズ */
+  background-color: green;
+  /* tablet サイズ */
+  @include media("screen", "medium") {
+    background-color: blue;
+  }
+  /* pc サイズ */
+  @include media("screen", "pc") {
+    background-color: red;
+  }
+}
+```
+
+これを変換すると、
+
+```css
+p {
+  background-color: green;
+}
+@media only screen and (max-width: 1199px) and (min-width: 768px) {
+  p {
+    background-color: blue;
+  }
+}
+@media only screen and (min-width: 1200) {
+  p {
+    background-color: red;
+  }
+}
+```
 
 ### HTML
 
