@@ -1,0 +1,59 @@
+$font-base-size: 10px;
+
+$design_pc_width: 1200;
+$design_sp_width: 375;
+
+$break-medium: $design_pc_width * 1px - 1;
+$break-small: 767px;
+$break-xsmall: 321px;
+
+// media query
+@function translate-media-condition($c) {
+  $condMap: (
+    "screen": "only screen",
+    "print": "only print",
+    "medium":
+      "(max-width: #{$break-medium}) and (min-width: #{$break-small+1px})",
+    "small": "(max-width: #{$break-small})",
+    "xsamll": "(max-width: #{$break-xsmall})",
+    "pc": "(min-width: #{$design_pc_width})",
+  );
+  @return map-get($condMap, $c);
+}
+
+// The mdia mixin
+@mixin media($args...) {
+  $query: "";
+  @each $arg in $args {
+    $op: "";
+    @if ($query != "") {
+      $op: " and ";
+    }
+    $query: $query + $op + translate-media-condition($arg);
+  }
+  @media #{$query} {
+    @content;
+  }
+}
+
+// function
+@function size-relative($size: 10px, $type: "font") {
+  @if type-of($size) == "number" {
+    $units: (
+      "font": 1rem,
+      "display": 100vw,
+    );
+    @if $type == "font" {
+      @return ($size + 0px) / $font-base-size * map-get($units, $type);
+    } @else {
+      $base-display: (
+        "pc": $design_pc_width + 0px,
+        "sp": $design_sp_width + 0px,
+      );
+      @return ($size + 0px) / map-get($base-display, $base) *
+        map-get($units, $type);
+    }
+  } @else {
+    @debug $size;
+  }
+}
