@@ -1,20 +1,22 @@
 const path = require("path")
+const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries")
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
 const outputPath = path.resolve(__dirname, "html")
 
 module.exports = {
   plugins: [
-    new FixStyleOnlyEntriesPlugin({
-      extensions: ["less", "scss", "css", "styl", "sass", "html"],
-    }),
+    new RemoveEmptyScriptsPlugin({ extensions: ["html", "scss"] }),
     new MiniCssExtractPlugin(),
     new CleanWebpackPlugin(),
   ],
+  resolve: {
+    modules: ["node_modules", path.resolve(__dirname, "src", "js")],
+  },
   entry: {
-    "assets/css/style": path.resolve(__dirname, "src/scss/style.scss"),
+    "assets/css/style": "./src/scss/style.scss",
+    "assets/css/footer": "./src/scss/footer.scss",
     "assets/js/app": "./src/js/app.js",
     index: "./src/index.html",
   },
@@ -22,7 +24,11 @@ module.exports = {
     path: outputPath,
   },
   devServer: {
+    host: "0.0.0.0",
     contentBase: path.join(__dirname, "html"),
+    hot: false,
+    liveReload: false,
+    compress: true,
   },
   module: {
     rules: [
@@ -32,8 +38,25 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"],
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  useBuiltIns: "entry",
+                  corejs: "3",
+                },
+              ],
+              "@babel/preset-react",
+            ],
+            plugins: ["@babel/plugin-syntax-dynamic-import"],
           },
+        },
+      },
+      {
+        test: /\.mp3$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "assets/media/[name][ext]",
         },
       },
       {
@@ -47,6 +70,27 @@ module.exports = {
       },
       {
         oneOf: [
+          {
+            test: /\.svg$/i,
+            resourceQuery: /inline/,
+            use: [
+              {
+                loader: "svg-inline-loader",
+              },
+            ],
+          },
+          {
+            test: /\.svg$/i,
+            resourceQuery: /url/,
+            use: [
+              {
+                loader: "svg-url-loader",
+                options: {
+                  iesafe: true,
+                },
+              },
+            ],
+          },
           {
             test: /\.(gif|png|jpe?g|svg)$/i,
             resourceQuery: /lazyload/,
@@ -109,6 +153,10 @@ module.exports = {
                     attribute: "data-src",
                     type: "src",
                   },
+                  {
+                    attribute: "data-bg",
+                    type: "src",
+                  },
                 ],
                 urlFilter: (attribute, value, resourcePath) => {
                   if (/\.(ico|css|js)$/.test(value)) {
@@ -127,13 +175,15 @@ module.exports = {
     splitChunks: {
       filename: "assets/js/[name].js",
       cacheGroups: {
-        vendors: {
-          test(module, chunks) {
-            return module.resource && /node_modules\//i.test(module.resource)
-          },
-          name: "vendor",
-          chunks: "async",
-          enforce: true,
+        lodash: {
+          test: /lodash/,
+          name: "lodash",
+          chunks: "all",
+        },
+        gsap: {
+          test: /gsap/,
+          name: "gsap",
+          chunks: "all",
         },
       },
     },
