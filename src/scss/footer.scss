@@ -1,0 +1,121 @@
+/** ページフッター **/
+@use "sass:math";
+@import "vars";
+.page-footer {
+  &--section {
+    height: auto;
+    padding: 3.2rem 1.5rem;
+  }
+  height: auto;
+  @include media("screen", "pc") {
+    max-width: 70rem;
+    margin: 0 auto;
+  }
+  &--link_products {
+    font-family: $sans;
+    line-height: math.div(33, 14) * 1em;
+    letter-spacing: math.div(200, 1000) * 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 6rem;
+    color: #fff;
+    background-color: #3b3b3b;
+    @include media("screen", "pc") {
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+  }
+  &--links_wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 3.25rem 0 0;
+    @include media("screen", "pc") {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+  &--link {
+    &_item {
+      width: 100%;
+      height: 5rem;
+      display: flex;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      border: 1px solid #000;
+      margin: 0.75rem 0;
+      @include media("screen", "pc") {
+        max-width: 28rem;
+        height: 6.7rem;
+        width: percentage(math.div(280, 700));
+        margin: 0 1rem;
+      }
+      span {
+        font-family: $sans;
+        color: #000;
+        font-size: 1.6rem;
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: math.div(40, 1000) * 1em;
+        &.futura {
+          font-family: $futura;
+        }
+        @include media("screen", "pc") {
+          display: block;
+          text-align: center;
+          font-size: 1.8rem;
+          line-height: math.div(24, 18) * 1em;
+        }
+      }
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+        width: 0.8rem;
+        height: 1.2rem;
+        background-size: contain;
+        background-position: center;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-image: url(../images/footer-link.svg?url);
+        @include media("screen", "pc") {
+          width: 1.6rem;
+          height: 2.4rem;
+        }
+      }
+    }
+    &_instagram {
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: percentage(math.div(50, 345));
+        transform: translate(-50%, -50%);
+        width: 2.6rem;
+        height: 2.6rem;
+        background-size: contain;
+        background-position: center;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-image: url(../images/instagram-mono.svg?url);
+        @include media("screen", "pc") {
+          width: 3.7rem;
+          height: 3.7rem;
+        }
+      }
+    }
+  }
+}
+
+#onwardcrossetmag-footer {
+  background-color: #fff;
+  width: 100%;
+  height: auto;
+}

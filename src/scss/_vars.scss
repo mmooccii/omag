@@ -1,6 +1,6 @@
+@use "sass:math";
 $font-base-size: 10px;
-
-$design_pc_width: 1200;
+$design_pc_width: 1366;
 $design_sp_width: 375;
 
 $break-medium: $design_pc_width * 1px - 1;
@@ -16,7 +16,7 @@ $break-xsmall: 321px;
       "(max-width: #{$break-medium}) and (min-width: #{$break-small+1px})",
     "small": "(max-width: #{$break-small})",
     "xsamll": "(max-width: #{$break-xsmall})",
-    "pc": "(min-width: #{$design_pc_width})",
+    "pc": "(min-width: #{$break-small+1px})",
   );
   @return map-get($condMap, $c);
 }
@@ -44,13 +44,13 @@ $break-xsmall: 321px;
       "display": 100vw,
     );
     @if $type == "font" {
-      @return ($size + 0px) / $font-base-size * map-get($units, $type);
+      @return math.div($size + 0px, $font-base-size) * map-get($units, $type);
     } @else {
       $base-display: (
         "pc": $design_pc_width + 0px,
         "sp": $design_sp_width + 0px,
       );
-      @return ($size + 0px) / map-get($base-display, $base) *
+      @return math.div($size + 0px, map-get($base-display, $base)) *
         map-get($units, $type);
     }
   } @else {
@@ -86,3 +86,70 @@ $helvetica: "Helvetica Neue", Helvetica, "Open Sans", Arial, "Lucida Grande",
   sans-serif;
 $futura: "futura-pt", sans-serif;
 $times: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+
+@mixin bgimageInit() {
+  display: block;
+  background-color: transparent;
+  background-repeat: no-repeat;
+}
+
+@mixin moving-arrow($url, $width: 10, $height: 12, $right: false) {
+  .moving-arrow {
+    display: block;
+    $arrow-width: $width;
+    $arrow-height: $height;
+    @if ($right == true) {
+      $arrow-width: $width * 2;
+    } @else {
+      $arrow-height: $height * 2;
+    }
+
+    width: $arrow-width;
+    height: $arrow-height;
+    & > span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      &::before,
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: $width;
+        height: $height;
+        background-image: url($url);
+        @if ($right == true) {
+          background-size: auto 100%;
+        } @else {
+          background-size: 100% auto;
+        }
+        background-repeat: no-repeat;
+        background-color: transparent;
+        @if ($right == true) {
+          top: 50%;
+          left: 70%;
+        } @else {
+          top: 70%;
+          left: 50%;
+        }
+        transform: translate(-50%, -50%);
+      }
+      @if ($right == true) {
+        &::before {
+          animation: arrow-right-move 2s ease-in-out infinite;
+        }
+        &::after {
+          animation: arrow-right-move 2s 1s ease-in-out infinite;
+        }
+      } @else {
+        &::before {
+          animation: arrow-down-move 2s ease-in-out infinite;
+        }
+        &::after {
+          animation: arrow-down-move 2s 1s ease-in-out infinite;
+        }
+      }
+    }
+  }
+}

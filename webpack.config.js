@@ -30,6 +30,9 @@ module.exports = {
     liveReload: false,
     compress: true,
   },
+  externals: {
+    gsap: "gsap",
+  },
   module: {
     rules: [
       {
@@ -93,6 +96,21 @@ module.exports = {
           },
           {
             test: /\.(gif|png|jpe?g|svg)$/i,
+            resourceQuery: /lazyloadsass/,
+            use: [
+              {
+                loader: "@mmooccii/lazyload-loader",
+                options: {
+                  name: "assets/images/blur/[name].[ext]",
+                  publicPath: (url, resourcePath, context) => {
+                    return url.replace(/^assets/i, "..")
+                  },
+                },
+              },
+            ],
+          },
+          {
+            test: /\.(gif|png|jpe?g|svg)$/i,
             resourceQuery: /lazyload/,
             use: [
               {
@@ -100,14 +118,20 @@ module.exports = {
                 options: {
                   name: "assets/images/blur/[name].[ext]",
                   publicPath: (url, resourcePath, context) => {
-                    if (/s?css\/images/i.test(resourcePath)) {
-                      return url.replace(/^assets/i, "..")
-                    }
                     return url
                   },
                 },
               },
             ],
+          },
+          {
+            test: /\.(gif|png|jpe?g|svg)$/i,
+            type: "asset/resource",
+            resourceQuery: /css/,
+            generator: {
+              filename: "assets/images/[name].[ext]",
+              publicPath: "../../",
+            },
           },
           {
             test: /\.(gif|png|jpe?g|svg)$/i,

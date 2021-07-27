@@ -1,0 +1,72 @@
+.sp {
+  display: block !important;
+  &.inline {
+    display: inline !important;
+  }
+  &.inline-block {
+    display: inline-block !important;
+  }
+  &.flex {
+    display: flex !important;
+  }
+  @include media("screen", "pc") {
+    &.inline,
+    &.inline-block,
+    &.flex,
+    & {
+      display: none !important;
+    }
+  }
+}
+
+.pc {
+  &.inline,
+  &.inline-block,
+  &.flex,
+  & {
+    display: none !important;
+  }
+  @include media("screen", "pc") {
+    display: block !important;
+    &.inline {
+      display: inline !important;
+    }
+    &.inline-block {
+      display: inline-block !important;
+    }
+    &.flex {
+      display: flex !important;
+    }
+  }
+}
+// Commons
+img {
+  max-width: 100%;
+  height: auto;
+  width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  &:hover,
+  &:visited,
+  &:link,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+// Arrow Animation
+@keyframes arrow-down-move {
+  0% {
+    top: 20%;
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
