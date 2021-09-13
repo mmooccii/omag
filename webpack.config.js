@@ -16,7 +16,6 @@ module.exports = {
   },
   entry: {
     "assets/css/style": "./src/scss/style.scss",
-    "assets/css/footer": "./src/scss/footer.scss",
     "assets/js/app": "./src/js/app.js",
     index: "./src/index.html",
   },
@@ -40,16 +39,15 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: [
+              "@babel/preset-env",
+              {
+                useBuiltIns: "entry",
+                corejs: { version: "3", propersals: true },
+              },
+            ],
             plugins: ["@babel/plugin-syntax-dynamic-import"],
           },
-        },
-      },
-      {
-        test: /\.mp3$/i,
-        type: "asset/resource",
-        generator: {
-          filename: "assets/media/[name][ext]",
         },
       },
       {
